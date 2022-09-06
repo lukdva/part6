@@ -7,6 +7,7 @@ const AnecdotesList = () => {
 
     const dispatch = useDispatch()
     const anecdotes = useSelector(state => state.anecdotes)
+    const filter = useSelector(state => state.filter)
 
     const vote = (anecdote) => {
         console.log('vote', anecdote.id)
@@ -17,16 +18,18 @@ const AnecdotesList = () => {
 
     return (
         <>
-            {anecdotes.map(anecdote =>
-                <div key={anecdote.id}>
-                    <div>
-                        {anecdote.content}
+            {anecdotes
+                .filter( a => a.content.toLowerCase().includes(filter.toLowerCase()))
+                .map(anecdote =>
+                    <div key={anecdote.id}>
+                        <div>
+                            {anecdote.content}
+                        </div>
+                        <div>
+                            has {anecdote.votes}
+                            <button onClick={() => vote(anecdote)}>vote</button>
+                        </div>
                     </div>
-                    <div>
-                        has {anecdote.votes}
-                        <button onClick={() => vote(anecdote)}>vote</button>
-                    </div>
-                </div>
             )}
         </>
     )
