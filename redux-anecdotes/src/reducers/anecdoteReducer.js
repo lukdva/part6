@@ -1,32 +1,22 @@
 import anecdotesService from "../services/anecdotesService"
 
 const initialState = []
+const sortByVotesDec = (a, b) => b.votes - a.votes
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    // case 'VOTE':
-    //   const id = action.data.id
-    //   const anecdoteToChange = state.find(anecdote => anecdote.id === id)
-    //   const changedAnecdote = { ...anecdoteToChange, votes: anecdoteToChange.votes + 1 }
-    //   return state.map(anecdote => anecdote.id === id ? changedAnecdote : anecdote).sort((a, b) => b.votes - a.votes)
     case 'NEW_ANECDOTE':
       return [...state, action.data]
     case 'SET_ANECDOTES':
-      return action.data
+      return action.data.sort(sortByVotesDec)
     case 'UPDATE_ANECDOTE':
       const updatedAnecdote = action.data
-      return state.map(anecdote => anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote).sort((a, b) => b.votes - a.votes)
+      return state.map(anecdote => anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote).sort(sortByVotesDec)
     default:
       return state
   }
 
 }
-// export const vote = id => {
-//   return {
-//     type: 'VOTE',
-//     data: { id }
-//   }
-// }
 export const newAnecdote = anecdote => {
   return {
     type: 'NEW_ANECDOTE',
